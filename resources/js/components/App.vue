@@ -1,4 +1,4 @@
-<template>
+<template lang="">
     <div class="content">
         <div class="title m-b-md">Work in progress</div>
     </div>
@@ -6,7 +6,6 @@
 <script>
 
 export default {
-    name: App,
     
 };
 </script>
