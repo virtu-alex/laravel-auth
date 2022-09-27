@@ -30,8 +30,8 @@
                 </div>
             </div>
             <div class="col-1">
-                <img class="img-fluid"
-                    src="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg"
+                <img class="img-fluid pt-4"
+                    src="https://static.remove.bg/remove-bg-web/3ad3b721d276f1af1fb7121aff638a866139749a/assets/start-1abfb4fe2980eabfbbaaa4365a0692539f7cd2725f324f904565a9a744f8e214.jpg"
                     alt="post image preview" id="preview">
             </div>
         </div>

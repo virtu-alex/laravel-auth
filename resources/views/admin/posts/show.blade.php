@@ -21,6 +21,10 @@
             <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary">
                 <i class="fa solid fa-rotate-left m-2"></i> Indietro
             </a>
+            <a class="btn btn-sm btn-warning" href="{{ route('admin.posts.edit', $post) }}"><i
+                    class="fa-solid fa-pencil m-2"></i>
+                Modifica</a>
+
         </div>
         <div class="d-flex align-items-center justify-content-end">
             <form action="{{ route('admin.posts.destroy', $post->id) }}" method="POST" class="delete-form">

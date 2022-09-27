@@ -42,7 +42,7 @@ class PostController extends Controller
         $post = new Post();
         $post->fill($data);
         $post->slug = Str::slug($post->title, '-');
-        $post->salve();
+        $post->save();
         return redirect()->route('admin.posts.show', $post)->with('message', "Post creato con successo")->with('type', "success");
     }
 
@@ -60,12 +60,12 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view('admin.posts.edit', compact('post'));
     }
 
     /**
