@@ -96,7 +96,7 @@ class PostController extends Controller
         $data = $request->all();
         $data['slug'] = Str::slug($data['title'], '-');
         $post->update($data);
-        return redirect()->route('admin.posts.show', $post)->with('message', "Post modificato con successo")->with('type', "success");
+        return redirect()->route('admin.posts.index', $post)->with('message', "Post modificato con successo")->with('type', "success");
     }
 
     /**
