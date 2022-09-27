@@ -78,6 +78,7 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        // $request->validate()
         $data = $request->all();
         $data['slug'] = Str::slug($data['title'], '-');
         $post->update($data);
