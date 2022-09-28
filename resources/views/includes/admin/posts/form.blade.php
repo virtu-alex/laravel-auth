@@ -40,7 +40,7 @@
     <div class="col-12">
         <div class="form-group">
             <label for="content">Contenuto</label>
-            <textarea class="form-control" id="content" name="content" required>{{ old('content', $post->content) }}</textarea>
+            <textarea rows="12" class="form-control" id="content" name="content" required>{{ old('content', $post->content) }}</textarea>
         </div>
     </div>
     <div class="col-11">
