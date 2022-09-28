@@ -9,7 +9,7 @@
     <table class="table table-striped table-dark">
         <thead>
             <tr>
-                <th scope="col">#</th>
+                <th scope="col">ID</th>
                 <th scope="col">Titolo</th>
                 <th scope="col">Categoria</th>
                 <th scope="col">Slug</th>
@@ -25,7 +25,7 @@
                     <td>{{ $post->title }}</td>
                     <td>
                         @if ($post->category)
-                            {{ $post->category->label }}
+                            <span class="p-2 badge badge-{{$post->category->color}}">{{ $post->category->label }}</span>
                         @else
                             Nessuna
                         @endif
