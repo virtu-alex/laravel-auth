@@ -64,4 +64,18 @@
             {{ $posts->links() }}
         @endif
     </nav>
+    <section class="my-5" id="category-posts">
+        <h2 class="mb-2">
+            Posts by category
+        </h2>
+        <div class="row">
+            @foreach ($categories as $category)
+                <div class="col-3">
+                    <h4>
+                        {{ $category->label }}({{ count($category->posts) }})
+                    </h4>
+                </div>
+            @endforeach
+        </div>
+    </section>
 @endsection
