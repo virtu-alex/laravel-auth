@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 {
@@ -46,6 +47,7 @@ class PostController extends Controller
                 'title' => 'required|string|min:5|max:50|unique:posts',
                 'content' => 'required|string',
                 'image' => 'nullable|url',
+                'category_id' => 'nullable|exists:categories,id',
             ],
             [
                 'title.required' => 'Il titolo è obbligatorio',
@@ -53,6 +55,7 @@ class PostController extends Controller
                 'title.max' => 'Il titolo deve avere almeno :max caratteri',
                 'title.unique' => "Esiste già un post dal titolo $request->title",
                 'image.url' => "Url dell' immagine non valido",
+                'category_id.exists' => "Non esiste una categoria associabile",
             ]
         );
 
@@ -83,7 +86,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('admin.posts.edit', compact('post'));
+        $categories = Category::select('id', 'label')->get();
+        return view('admin.posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -95,6 +99,21 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        $request->validate([
+            'title' => ['required', 'string', 'min:5', 'max:50', Rule::unique('posts')->ignore($post->id)],
+            'content' => 'required|string',
+            'image' => 'nullable|url',
+            'category_id' => 'nullable | exists:categories,id',
+        ], [
+            'title.required' => 'Il titolo è obbligatorio',
+            'content.required' => 'Devi scrivere il contenuto del post',
+            'title.min' => 'Il titolo deve avere almeno :min caratteri',
+            'title.max' => 'Il titolo deve avere almeno :max caratteri',
+            'title.unique' => "Esiste già un post dal titolo $request->title",
+            'image.url' => "Url dell'immagine non valido",
+            'category_id.exists' => 'Non esiste una categoria associabile',
+        ]);
+
         $data = $request->all();
         $data['slug'] = Str::slug($data['title'], '-');
         $post->update($data);
