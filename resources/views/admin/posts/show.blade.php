@@ -20,17 +20,28 @@
         <p>{{ $post->content }}</p>
         <div>
             <strong>Creato il:</strong> {{ $post->created_at }}
+        </div>
+        <div>
             <strong>Modificato il:</strong> {{ $post->updated_at }}
+        </div>
+        <div>
+            <strong>Autore:</strong>
+            @if ($post->user)
+                {{ $post->user->name }}
+            @else
+                Autore anonimo
+            @endif
         </div>
     </div>
     <footer class="d-flex align-items-center justify-content-end">
         <div>
             <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary">
-                <i class="fa solid fa-rotate-left m-2"></i> Indietro
+                <i class="fa solid fa-rotate-left m-2"></i>
             </a>
-            <a class="btn btn-sm btn-warning" href="{{ route('admin.posts.edit', $post) }}"><i
-                    class="fa-solid fa-pencil m-2"></i>
-                Modifica</a>
+            @if ($post->user_id === Auth::id())
+                <a class="btn btn-sm btn-warning" href="{{ route('admin.posts.edit', $post) }}"><i
+                        class="fa-solid fa-pencil m-2"></i>
+                    Modifica</a>
 
         </div>
         <div class="d-flex align-items-center justify-content-end">
@@ -41,6 +52,7 @@
                     <i class="fa-solid fa-trash m-2"></i>Elimina
                 </button>
             </form>
+            @endif
         </div>
     </footer>
 @endsection
