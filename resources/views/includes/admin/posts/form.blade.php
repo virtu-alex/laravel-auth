@@ -64,5 +64,15 @@
     <button class="btn btn-success" type="submit">
         <i class="fa-solid fa-floppy-disk mr-2"></i> Salva
     </button>
+    {{-- Checkbox non utilizzato perche' in conflitto con la logica precedente --}}
+    {{-- @if ($post->exists && $post->user_id === Auth::id())
+        <div class="form-froup form-check">
+            <input type="checkbox" class="form-check input" id="switch_author" name="switch_author" value="1"
+                @if (old('switch_author'))  @endif>
+            <label class="form-check-label" for="switch_author">Assegnami come autore
+                </br>{{ $post->user->name }}</label>
+        </div>
+    @endif --}}
+
 </footer>
 </form>
