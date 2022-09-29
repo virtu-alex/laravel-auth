@@ -18,6 +18,7 @@ Auth::routes();
 
 Route::middleware('auth')->prefix('admin')->namespace('Admin')->name('admin.')->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/users', 'UserController@index')->name('users.index');
     Route::resource('posts', 'PostController');
     Route::resource('categories', 'CategoryController');
     Route::get('/{any}', function () {
