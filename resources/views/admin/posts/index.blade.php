@@ -56,7 +56,7 @@
                     <td>
                         @forelse($post->tags as $tag)
                             <span class="badge text-white p-1"
-                                style="background-color: {{ $tag->color }}">{{ $post->tags->label }}</span>
+                                style="background-color: {{ $tag->color }}">{{ $post->label }}</span>
                         @empty
                             Nessun tag
                         @endforelse
