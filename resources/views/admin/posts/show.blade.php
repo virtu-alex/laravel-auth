@@ -8,7 +8,7 @@
     </header>
     <div class="clearfix">
         @if ($post->image)
-            <img class="float-left mr-2" src="{{ $post->image }}" alt="{{ $post->slug }}">
+            <img width="150px" class="float-left mr-2 img-fluid" src="{{ $post->image }}" alt="{{ $post->slug }}">
         @endif
         <p><strong>Categoria:</strong>
             @if ($post->category)

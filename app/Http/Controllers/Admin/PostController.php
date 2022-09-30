@@ -160,7 +160,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        if(count($post->tags)) $post->tags->detach();
+        if(count($post->tags)) $post->tags()->detach();
         if ($post->user_id !== Auth::id()) {
             return redirect()->route('admin.posts.index')->with('message', "Non sei autorizzato ad eliminare questo post")->with('type', "warning");
         }
