@@ -17,6 +17,14 @@
                 Nessuna
             @endif
         </p>
+        <div class="mb-2">
+            <strong>Tags:</strong>
+            @forelse($post->tags as $tag)
+                <span class="badge text-white p-1" style="background-color: {{ $tag->color }}">{{$tag->label}}</span>
+            @empty
+                Nessun tag
+            @endforelse
+        </div>
         <p>{{ $post->content }}</p>
         <div>
             <strong>Creato il:</strong> {{ $post->created_at }}
