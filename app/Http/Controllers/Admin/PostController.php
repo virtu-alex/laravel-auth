@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Post;
+use App\Models\Tag;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -41,7 +42,9 @@ class PostController extends Controller
     {
         $post = new Post();
         $categories = Category::select('id', 'label')->get();
-        return view('admin.posts.create', compact('post', 'categories'));
+        $tags = Tag::select('id', 'label')->get();
+        $prev_tags = [];
+        return view('admin.posts.create', compact('post', 'categories', 'tags', 'prev_tags'));
     }
 
     /**
@@ -58,6 +61,7 @@ class PostController extends Controller
                 'content' => 'required|string',
                 'image' => 'nullable|url',
                 'category_id' => 'nullable|exists:categories,id',
+                'tags' => 'nullable|exists:tags,id',
             ],
             [
                 'title.required' => 'Il titolo è obbligatorio',
@@ -66,6 +70,7 @@ class PostController extends Controller
                 'title.unique' => "Esiste già un post dal titolo $request->title",
                 'image.url' => "Url dell' immagine non valido",
                 'category_id.exists' => "Non esiste una categoria associabile",
+                'tags.exists' => "Tag indicati non validi",
             ]
         );
 
@@ -75,6 +80,9 @@ class PostController extends Controller
         $post->slug = Str::slug($post->title, '-');
         $post->user_id = Auth::id();
         $post->save();
+        if (array_key_exists('tags', $data)) {
+            $post->tags()->attach($data['tags']);
+        }
         return redirect()->route('admin.posts.show', $post)->with('message', "Post creato con successo")->with('type', "success");
     }
 
@@ -100,8 +108,10 @@ class PostController extends Controller
         if ($post->user_id !== Auth::id()) {
             return redirect()->route('admin.posts.index')->with('message', "Non sei autorizzato a modificare questo post")->with('type', "warning");
         }
+        $tags = Tag::select('id', 'label')->get();
         $categories = Category::select('id', 'label')->get();
-        return view('admin.posts.edit', compact('post', 'categories'));
+        $prev_tags = $post->tags->pluck('id')->toArray();
+        return view('admin.posts.edit', compact('post', 'categories', 'prev_tags','tags'));
     }
 
     /**
@@ -120,6 +130,8 @@ class PostController extends Controller
             'content' => 'required|string',
             'image' => 'nullable|url',
             'category_id' => 'nullable | exists:categories,id',
+            'tags' => 'nullable|exists:tags,id',
+
         ], [
             'title.required' => 'Il titolo è obbligatorio',
             'content.required' => 'Devi scrivere il contenuto del post',
@@ -128,13 +140,15 @@ class PostController extends Controller
             'title.unique' => "Esiste già un post dal titolo $request->title",
             'image.url' => "Url dell'immagine non valido",
             'category_id.exists' => 'Non esiste una categoria associabile',
+            'tags.exists' => "Tag indicati non validi",
         ]);
 
         $data = $request->all();
         $data['slug'] = Str::slug($data['title'], '-');
-
-        // if (array_key_exists('switch_author', $data)) $post->user_id = Auth::id();
-        $post->update($data);
+        if (!array_key_exists('tags', $data)) $post->tags()->detach();
+        else $post->tags()->sync($data['tags']);
+            // if (array_key_exists('switch_author', $data)) $post->user_id = Auth::id();
+            $post->update($data);
         return redirect()->route('admin.posts.index', $post)->with('message', "Post modificato con successo")->with('type', "success");
     }
 
@@ -146,6 +160,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        if(count($post->tags)) $post->tags->detach();
         if ($post->user_id !== Auth::id()) {
             return redirect()->route('admin.posts.index')->with('message', "Non sei autorizzato ad eliminare questo post")->with('type', "warning");
         }
